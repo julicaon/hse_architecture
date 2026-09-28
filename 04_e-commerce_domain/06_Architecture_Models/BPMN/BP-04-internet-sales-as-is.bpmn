@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+             id="Definitions_BP04"
+             targetNamespace="http://retailmax.example/bpmn">
+  <collaboration id="Collaboration_BP04">
+    <participant id="Participant_BP04" name="Интернет-продажи RetailMax" processRef="Process_BP04" />
+  </collaboration>
+
+  <process id="Process_BP04" name="BP-04 Интернет-продажи As-Is" isExecutable="false">
+    <startEvent id="StartEvent_Order" name="Покупатель начал покупку" />
+    <task id="Task_SelectProduct" name="Выбрать товар" />
+    <task id="Task_ShowAvailability" name="Показать доступные остатки" />
+    <exclusiveGateway id="Gateway_Available" name="Товар доступен?" />
+    <task id="Task_NotifyUnavailable" name="Сообщить об отсутствии товара" />
+    <task id="Task_CreateOrder" name="Оформить заказ" />
+    <task id="Task_Authenticate" name="Зарегистрироваться или авторизоваться" />
+    <task id="Task_Pay" name="Оплатить заказ" />
+    <task id="Task_RegisterERP" name="Зарегистрировать заказ в ERP" />
+    <task id="Task_PickWMS" name="Передать задание и скомплектовать заказ в WMS" />
+    <task id="Task_Deliver" name="Передать заказ службе доставки" />
+    <task id="Task_Receive" name="Получить товар" />
+    <task id="Task_SaveCRM" name="Сохранить информацию о покупке в CRM" />
+    <endEvent id="EndEvent_Completed" name="Заказ завершён" />
+    <endEvent id="EndEvent_Unavailable" name="Заказ не оформлен" />
+
+    <sequenceFlow id="Flow_01" sourceRef="StartEvent_Order" targetRef="Task_SelectProduct" />
+    <sequenceFlow id="Flow_02" sourceRef="Task_SelectProduct" targetRef="Task_ShowAvailability" />
+    <sequenceFlow id="Flow_03" sourceRef="Task_ShowAvailability" targetRef="Gateway_Available" />
+    <sequenceFlow id="Flow_04_yes" name="Да" sourceRef="Gateway_Available" targetRef="Task_CreateOrder" />
+    <sequenceFlow id="Flow_04_no" name="Нет" sourceRef="Gateway_Available" targetRef="Task_NotifyUnavailable" />
+    <sequenceFlow id="Flow_05" sourceRef="Task_NotifyUnavailable" targetRef="EndEvent_Unavailable" />
+    <sequenceFlow id="Flow_06" sourceRef="Task_CreateOrder" targetRef="Task_Authenticate" />
+    <sequenceFlow id="Flow_07" sourceRef="Task_Authenticate" targetRef="Task_Pay" />
+    <sequenceFlow id="Flow_08" sourceRef="Task_Pay" targetRef="Task_RegisterERP" />
+    <sequenceFlow id="Flow_09" sourceRef="Task_RegisterERP" targetRef="Task_PickWMS" />
+    <sequenceFlow id="Flow_10" sourceRef="Task_PickWMS" targetRef="Task_Deliver" />
+    <sequenceFlow id="Flow_11" sourceRef="Task_Deliver" targetRef="Task_Receive" />
+    <sequenceFlow id="Flow_12" sourceRef="Task_Receive" targetRef="Task_SaveCRM" />
+    <sequenceFlow id="Flow_13" sourceRef="Task_SaveCRM" targetRef="EndEvent_Completed" />
+  </process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_BP04">
+    <bpmndi:BPMNPlane id="BPMNPlane_BP04" bpmnElement="Collaboration_BP04">
+      <bpmndi:BPMNShape id="ParticipantShape_BP04" bpmnElement="Participant_BP04">
+        <dc:Bounds x="80" y="80" width="2600" height="220" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartShape" bpmnElement="StartEvent_Order">
+        <dc:Bounds x="140" y="160" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SelectShape" bpmnElement="Task_SelectProduct">
+        <dc:Bounds x="220" y="145" width="120" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AvailabilityShape" bpmnElement="Task_ShowAvailability">
+        <dc:Bounds x="380" y="145" width="140" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GatewayShape" bpmnElement="Gateway_Available" isMarkerVisible="true">
+        <dc:Bounds x="560" y="155" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UnavailableShape" bpmnElement="Task_NotifyUnavailable">
+        <dc:Bounds x="650" y="230" width="150" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="CreateOrderShape" bpmnElement="Task_CreateOrder">
+        <dc:Bounds x="650" y="145" width="120" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AuthShape" bpmnElement="Task_Authenticate">
+        <dc:Bounds x="810" y="145" width="150" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="PayShape" bpmnElement="Task_Pay">
+        <dc:Bounds x="1000" y="145" width="120" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ERPShape" bpmnElement="Task_RegisterERP">
+        <dc:Bounds x="1160" y="145" width="150" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="WMSShape" bpmnElement="Task_PickWMS">
+        <dc:Bounds x="1350" y="145" width="180" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DeliveryShape" bpmnElement="Task_Deliver">
+        <dc:Bounds x="1570" y="145" width="170" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ReceiveShape" bpmnElement="Task_Receive">
+        <dc:Bounds x="1780" y="145" width="120" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="CRMShape" bpmnElement="Task_SaveCRM">
+        <dc:Bounds x="1940" y="145" width="170" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="CompletedShape" bpmnElement="EndEvent_Completed">
+        <dc:Bounds x="2190" y="160" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UnavailableEndShape" bpmnElement="EndEvent_Unavailable">
+        <dc:Bounds x="850" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="FlowEdge_01" bpmnElement="Flow_01"><di:waypoint x="176" y="178" /><di:waypoint x="220" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_02" bpmnElement="Flow_02"><di:waypoint x="340" y="180" /><di:waypoint x="380" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_03" bpmnElement="Flow_03"><di:waypoint x="520" y="180" /><di:waypoint x="560" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_04_yes" bpmnElement="Flow_04_yes"><di:waypoint x="610" y="180" /><di:waypoint x="650" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_04_no" bpmnElement="Flow_04_no"><di:waypoint x="585" y="205" /><di:waypoint x="585" y="260" /><di:waypoint x="650" y="260" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_05" bpmnElement="Flow_05"><di:waypoint x="800" y="260" /><di:waypoint x="850" y="260" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_06" bpmnElement="Flow_06"><di:waypoint x="770" y="180" /><di:waypoint x="810" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_07" bpmnElement="Flow_07"><di:waypoint x="960" y="180" /><di:waypoint x="1000" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_08" bpmnElement="Flow_08"><di:waypoint x="1120" y="180" /><di:waypoint x="1160" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_09" bpmnElement="Flow_09"><di:waypoint x="1310" y="180" /><di:waypoint x="1350" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_10" bpmnElement="Flow_10"><di:waypoint x="1530" y="180" /><di:waypoint x="1570" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_11" bpmnElement="Flow_11"><di:waypoint x="1740" y="180" /><di:waypoint x="1780" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_12" bpmnElement="Flow_12"><di:waypoint x="1900" y="180" /><di:waypoint x="1940" y="180" /></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="FlowEdge_13" bpmnElement="Flow_13"><di:waypoint x="2110" y="180" /><di:waypoint x="2190" y="178" /></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
